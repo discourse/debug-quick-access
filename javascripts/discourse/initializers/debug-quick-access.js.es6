@@ -10,13 +10,6 @@ export default {
       const showError =
         isAppWebview() && currentUser?.username_lower === "pmusaraj";
       api.reopenWidget("quick-access-panel", {
-        setItems(newItems) {
-          if (showError) {
-            alert("setItems: " + JSON.stringify(newItems) + " " + this.key);
-          }
-          return this._super(...arguments);
-        },
-
         refreshNotifications(state) {
           if (state.loading) {
             return;
@@ -26,20 +19,10 @@ export default {
             state.loading = true;
           }
 
-          this.findNewItems()
-            .then((newItems) => this.setItems(newItems))
-            .catch((error) => {
-              // eslint-disable-next-line no-console
-              // console.error(error);
-              // if (showError) {
-              //   alert("error in findNewItems: " + JSON.stringify(error));
-              // }
-              // this.setItems([]);
-              // do nothing
-            })
-            .finally(() => {
+          this.findNewItems().then((newItems) => {
+            return this.setItems(newItems).finally(() => {
               if (showError) {
-                alert("finally in refreshNotifs hit");
+                alert("finally hit");
               }
               state.loading = false;
               state.loaded = true;
@@ -50,29 +33,30 @@ export default {
               });
               this.scheduleRerender();
             });
+          });
         },
       });
 
-      api.reopenWidget("quick-access-notifications", {
-        findNewItems() {
-          if (showError) {
-            alert("findNewItems hit");
-          }
-          const staleItems = this.store.findStale(
-            "notification",
-            {
-              recent: true,
-              silent: this.currentUser.enforcedSecondFactor,
-              limit: 30,
-            },
-            { cacheKey: "recent-notifications" }
-          );
-          if (showError) {
-            alert("staleItems: " + JSON.stringify(staleItems));
-          }
-          return staleItems.refresh();
-        },
-      });
+      // api.reopenWidget("quick-access-notifications", {
+      //   findNewItems() {
+      //     if (showError) {
+      //       alert("findNewItems hit");
+      //     }
+      //     const staleItems = this.store.findStale(
+      //       "notification",
+      //       {
+      //         recent: true,
+      //         silent: this.currentUser.enforcedSecondFactor,
+      //         limit: 30,
+      //       },
+      //       { cacheKey: "recent-notifications" }
+      //     );
+      //     if (showError) {
+      //       alert("staleItems: " + JSON.stringify(staleItems));
+      //     }
+      //     return staleItems.refresh();
+      //   },
+      // });
     });
   },
 };
