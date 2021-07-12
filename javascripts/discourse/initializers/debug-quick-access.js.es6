@@ -1,5 +1,6 @@
 import { isAppWebview } from "discourse/lib/utilities";
 import { withPluginApi } from "discourse/lib/plugin-api";
+import Session from "discourse/models/session";
 
 export default {
   name: "debug-quick-access",
