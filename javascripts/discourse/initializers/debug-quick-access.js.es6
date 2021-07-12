@@ -19,7 +19,7 @@ export default {
 
         refreshNotifications(state) {
           if (showError) {
-            alert("hitting refreshNotifications" + JSON.stringify(state));
+            alert("refreshNotifications: " + JSON.stringify(state));
           }
           if (state.loading) {
             return;
@@ -49,6 +49,25 @@ export default {
               });
               this.scheduleRerender();
             });
+        },
+      });
+
+      api.reopenWidget("quick-access-notifications", {
+        findNewItems() {
+          if (showError) {
+            alert("findNewItems hit");
+          }
+          return this.store
+            .findStale(
+              "notification",
+              {
+                recent: true,
+                silent: this.currentUser.enforcedSecondFactor,
+                limit: 30,
+              },
+              { cacheKey: "recent-notifications" }
+            )
+            .refresh();
         },
       });
     });
