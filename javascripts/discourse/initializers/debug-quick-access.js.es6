@@ -20,7 +20,24 @@ export default {
             state.loading = true;
           }
 
-          this.findNewItems().then((newItems) => this.setItems(newItems));
+          this.findNewItems().then((newItems) => {
+            this.setItems(newItems)
+              .catch((e) => {
+                console.log(e);
+                this.setItems([]);
+              })
+              .finally(() => {
+                console.log("finally hit");
+                state.loading = false;
+                state.loaded = true;
+                this.newItemsLoaded();
+                this.sendWidgetAction("itemsLoaded", {
+                  hasUnread: this.hasUnread(),
+                  markRead: () => this.markRead(),
+                });
+                this.scheduleRerender();
+              });
+          });
         },
 
         setItems(newItems) {
