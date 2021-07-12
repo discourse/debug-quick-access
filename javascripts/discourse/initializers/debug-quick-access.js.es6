@@ -10,16 +10,16 @@ export default {
       const showError =
         isAppWebview() && currentUser?.username_lower === "pmusaraj";
       api.reopenWidget("quick-access-panel", {
-        html(attrs, state) {
-          if (showError) {
-            alert(JSON.stringify(state));
-          }
-          return this._super(...arguments);
-        },
+        // html(attrs, state) {
+        //   if (showError) {
+        //     alert(JSON.stringify(state));
+        //   }
+        //   return this._super(...arguments);
+        // },
 
         refreshNotifications(state) {
           if (showError) {
-            alert("hitting refreshNotifications");
+            alert("hitting refreshNotifications" + JSON.stringify(state));
           }
           if (state.loading) {
             return;
