@@ -30,11 +30,12 @@ export default {
             .then((newItems) => this.setItems(newItems))
             .catch((error) => {
               // eslint-disable-next-line no-console
-              console.error(error);
-              if (showError) {
-                alert("error in findNewItems: " + JSON.stringify(error));
-              }
-              this.setItems([]);
+              // console.error(error);
+              // if (showError) {
+              //   alert("error in findNewItems: " + JSON.stringify(error));
+              // }
+              // this.setItems([]);
+              // do nothing
             })
             .finally(() => {
               if (showError) {
