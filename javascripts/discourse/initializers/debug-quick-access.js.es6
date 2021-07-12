@@ -19,11 +19,14 @@ export default {
             state.loading = true;
           }
 
-          this.findNewItems().then((newItems) => {
-            return this.setItems(newItems).finally(() => {
-              if (showError) {
-                alert("finally hit");
-              }
+          this.findNewItems()
+            .then((newItems) => this.setItems(newItems))
+            .catch((e) => {
+              console.log(e);
+              this.setItems([]);
+            })
+            .finally(() => {
+              console.log("finally hit");
               state.loading = false;
               state.loaded = true;
               this.newItemsLoaded();
@@ -33,30 +36,19 @@ export default {
               });
               this.scheduleRerender();
             });
-          });
         },
       });
 
-      // api.reopenWidget("quick-access-notifications", {
-      //   findNewItems() {
-      //     if (showError) {
-      //       alert("findNewItems hit");
-      //     }
-      //     const staleItems = this.store.findStale(
-      //       "notification",
-      //       {
-      //         recent: true,
-      //         silent: this.currentUser.enforcedSecondFactor,
-      //         limit: 30,
-      //       },
-      //       { cacheKey: "recent-notifications" }
-      //     );
-      //     if (showError) {
-      //       alert("staleItems: " + JSON.stringify(staleItems));
-      //     }
-      //     return staleItems.refresh();
-      //   },
-      // });
+      api.reopenWidget("quick-access-notifications", {
+        findNewItems() {
+          return this._findStaleItemsInStore()
+            .refresh()
+            .catch((e) => {
+              console.log("error in findNewItems");
+              console.log(e);
+            });
+        },
+      });
     });
   },
 };
