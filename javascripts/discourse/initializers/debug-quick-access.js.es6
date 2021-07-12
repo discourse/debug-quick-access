@@ -10,12 +10,12 @@ export default {
       const showError =
         isAppWebview() && currentUser?.username_lower === "pmusaraj";
       api.reopenWidget("quick-access-panel", {
-        // html(attrs, state) {
-        //   if (showError) {
-        //     alert(JSON.stringify(state));
-        //   }
-        //   return this._super(...arguments);
-        // },
+        setItems(newItems) {
+          if (showError) {
+            alert("setItems: " + JSON.stringify(newItems) + " " + this.key);
+          }
+          return this._super(...arguments);
+        },
 
         refreshNotifications(state) {
           if (showError) {
@@ -40,6 +40,9 @@ export default {
               return this.setItems([]);
             })
             .finally(() => {
+              if (showError) {
+                alert("finally in refreshNotifs hit");
+              }
               state.loading = false;
               state.loaded = true;
               this.newItemsLoaded();
@@ -57,17 +60,20 @@ export default {
           if (showError) {
             alert("findNewItems hit");
           }
-          return this.store
-            .findStale(
-              "notification",
-              {
-                recent: true,
-                silent: this.currentUser.enforcedSecondFactor,
-                limit: 30,
-              },
-              { cacheKey: "recent-notifications" }
-            )
-            .refresh();
+          const staleItems = this.store.findStale(
+            "notification",
+            {
+              recent: true,
+              silent: this.currentUser.enforcedSecondFactor,
+              limit: 30,
+            },
+            { cacheKey: "recent-notifications" }
+          );
+          console.log(staleItems);
+          if (showError) {
+            alert(JSON.stringify(staleItems));
+          }
+          return staleItems.refresh();
         },
       });
     });
