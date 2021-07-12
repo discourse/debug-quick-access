@@ -11,31 +11,45 @@ export default {
       const showError =
         isAppWebview() && currentUser?.username_lower === "pmusaraj";
       api.reopenWidget("quick-access-panel", {
-        refreshNotifications(state) {
-          if (state.loading) {
-            return;
-          }
+        // refreshNotifications(state) {
+        //   if (state.loading) {
+        //     return;
+        //   }
 
-          if (this.getItems().length === 0) {
-            state.loading = true;
-          }
+        //   if (this.getItems().length === 0) {
+        //     state.loading = true;
+        //   }
 
-          this.findNewItems().then((newItems) => {
-            this.setItems(newItems)
-              .catch((e) => this.setItems([]))
-              .finally(() => {
-                console.log("finally hit");
-                state.loading = false;
-                state.loaded = true;
-                this.newItemsLoaded();
-                this.sendWidgetAction("itemsLoaded", {
-                  hasUnread: this.hasUnread(),
-                  markRead: () => this.markRead(),
-                });
-                this.scheduleRerender();
-              });
-          });
-        },
+        //   // this.findNewItems().then((newItems) => {
+        //   //   return this.setItems(newItems)
+        //   //     .catch((e) => this.setItems([]))
+        //   //     .finally(() => {
+        //   //       console.log("finally hit");
+        //   //       state.loading = false;
+        //   //       state.loaded = true;
+        //   //       this.newItemsLoaded();
+        //   //       this.sendWidgetAction("itemsLoaded", {
+        //   //         hasUnread: this.hasUnread(),
+        //   //         markRead: () => this.markRead(),
+        //   //       });
+        //   //       this.scheduleRerender();
+        //   //     });
+        //   // });
+        //   this.findNewItems()
+        //     .then((newItems) => this.setItems(newItems))
+        //     .catch(() => this.setItems([]))
+        //     .finally(() => {
+        //       console.log("finally hit");
+        //       state.loading = false;
+        //       state.loaded = true;
+        //       this.newItemsLoaded();
+        //       this.sendWidgetAction("itemsLoaded", {
+        //         hasUnread: this.hasUnread(),
+        //         markRead: () => this.markRead(),
+        //       });
+        //       this.scheduleRerender();
+        //     });
+        // },
 
         setItems(newItems) {
           Session.currentProp(`${this.key}-items`, newItems);
