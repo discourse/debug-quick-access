@@ -19,23 +19,13 @@ export default {
             state.loading = true;
           }
 
-          this.findNewItems()
-            .then((newItems) => this.setItems(newItems))
-            .catch((e) => {
-              console.log(e);
-              this.setItems([]);
-            })
-            .finally(() => {
-              console.log("finally hit");
-              state.loading = false;
-              state.loaded = true;
-              this.newItemsLoaded();
-              this.sendWidgetAction("itemsLoaded", {
-                hasUnread: this.hasUnread(),
-                markRead: () => this.markRead(),
-              });
-              this.scheduleRerender();
-            });
+          this.findNewItems().then((newItems) => this.setItems(newItems));
+        },
+
+        setItems(newItems) {
+          Session.currentProp(`${this.key}-items`, newItems);
+          console.log("custom quick-access-panel setItems with Promise");
+          return Promise.resolve([]);
         },
       });
 
