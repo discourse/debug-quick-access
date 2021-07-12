@@ -34,7 +34,7 @@ export default {
               if (showError) {
                 alert("error in findNewItems: " + JSON.stringify(error));
               }
-              return this.setItems([]);
+              this.setItems([]);
             })
             .finally(() => {
               if (showError) {
@@ -66,7 +66,6 @@ export default {
             },
             { cacheKey: "recent-notifications" }
           );
-          console.log(staleItems);
           if (showError) {
             alert("staleItems: " + JSON.stringify(staleItems));
           }
