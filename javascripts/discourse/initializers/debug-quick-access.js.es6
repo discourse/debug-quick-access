@@ -22,10 +22,7 @@ export default {
 
           this.findNewItems().then((newItems) => {
             this.setItems(newItems)
-              .catch((e) => {
-                console.log(e);
-                this.setItems([]);
-              })
+              .catch((e) => this.setItems([]))
               .finally(() => {
                 console.log("finally hit");
                 state.loading = false;
