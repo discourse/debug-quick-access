@@ -18,9 +18,6 @@ export default {
         },
 
         refreshNotifications(state) {
-          if (showError) {
-            alert("refreshNotifications: " + JSON.stringify(state));
-          }
           if (state.loading) {
             return;
           }
@@ -35,7 +32,7 @@ export default {
               // eslint-disable-next-line no-console
               console.error(error);
               if (showError) {
-                alert(JSON.stringify(error));
+                alert("error in findNewItems: " + JSON.stringify(error));
               }
               return this.setItems([]);
             })
@@ -71,7 +68,7 @@ export default {
           );
           console.log(staleItems);
           if (showError) {
-            alert(JSON.stringify(staleItems));
+            alert("staleItems: " + JSON.stringify(staleItems));
           }
           return staleItems.refresh();
         },
