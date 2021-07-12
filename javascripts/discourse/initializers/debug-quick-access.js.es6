@@ -7,16 +7,18 @@ export default {
   initialize(container) {
     withPluginApi("0.11.5", (api) => {
       let currentUser = api.getCurrentUser();
+      const showError =
+        isAppWebview() && currentUser?.username_lower === "pmusaraj";
       api.reopenWidget("quick-access-panel", {
         html(attrs, state) {
-          if (isAppWebview() && currentUser?.username_lower === "pmusaraj") {
+          if (showError) {
             alert(JSON.stringify(state));
           }
           return this._super(...arguments);
         },
 
         refreshNotifications(state) {
-          if (isAppWebview() && currentUser?.username_lower === "pmusaraj") {
+          if (showError) {
             alert("hitting refreshNotifications");
           }
           if (state.loading) {
@@ -32,10 +34,7 @@ export default {
             .catch((error) => {
               // eslint-disable-next-line no-console
               console.error(error);
-              if (
-                isAppWebview() &&
-                currentUser?.username_lower === "pmusaraj"
-              ) {
+              if (showError) {
                 alert(JSON.stringify(error));
               }
               return this.setItems([]);
