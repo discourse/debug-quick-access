@@ -1,4 +1,3 @@
-//  Use the message bus for live reloading of components for faster development.
 export default {
   name: "live-dev-debug",
   initialize(container) {
@@ -9,6 +8,8 @@ export default {
     messageBus.subscribe(
       "/file-change",
       (data) => {
+        console.log('--------');
+        console.log(session.mbLastFileChangeId);
         data.forEach((me) => {
           if (me === "refresh") {
           } else if (me.new_href && me.target) {
