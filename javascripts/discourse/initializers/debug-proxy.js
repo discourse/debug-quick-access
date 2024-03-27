@@ -19,6 +19,7 @@ export default {
         type: "POST",
         data: JSON.stringify(body),
       }).then((json) => {
+        // eslint-disable-next-line no-console
         console.log(json);
       });
     });
