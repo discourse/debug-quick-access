@@ -5,7 +5,7 @@ export default {
   name: "debug-proxy",
 
   initialize() {
-    withPluginApi("0.8.31", () => {
+    withPluginApi(() => {
       const body = {
         contentProvider: "contentProvider",
         contentId: "contentId",
